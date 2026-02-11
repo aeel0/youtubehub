@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Will You Be My Valentine? 💝</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #000;
+      position: relative;
+    }
+
+    video#bgVideo {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      z-index: -2;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 620px;
+      padding: 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 20px rgba(255,105,180,0.8);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    p {
+      font-size: 1.6rem;
+      margin: 1.5rem 0;
+      line-height: 1.4;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+    }
+
+    .buttons {
+      margin: 2.5rem 0;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font-size: 1.5rem;
+      padding: 16px 48px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    }
+
+    #yesBtn {
+      background: #ff4757;
+      color: white;
+      transform: scale(1);
+    }
+
+    #yesBtn.grow-1 { transform: scale(1.15); }
+    #yesBtn.grow-2 { transform: scale(1.35); }
+    #yesBtn.grow-3 { transform: scale(1.6); }
+    #yesBtn.grow-4 { transform: scale(1.9); }
+    #yesBtn.grow-5 { transform: scale(2.3); font-size: 1.9rem; }
+
+    #noBtn {
+      background: #57606f;
+      color: white;
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 2.2rem;
+      animation: float 6s linear infinite;
+      opacity: 0.9;
+    }
+
+    @keyframes float { 0% { transform: translateY(100vh) rotate(0deg); } 100% { transform: translateY(-150px) rotate(720deg); } }
+
+    @keyframes glow { from { text-shadow: 0 0 10px #ff9a9e; } to { text-shadow: 0 0 30px #ff4757, 0 0 50px #ff6b81; } }
+
+    .hidden { display: none !important; }
+    .reveal { animation: fadeIn 1.5s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+  <video id="bgVideo" autoplay loop muted playsinline preload="auto">
+    <source src="https://raw.githubusercontent.com/aeel0/bickys/main/va.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="overlay"></div>
+
+  <div class="hearts" id="hearts"></div>
+
+  <div class="container" id="mainContent">
+    <h1>Hey there, cutie! 💕</h1>
+    <p id="question">Will you be my Valentine, Bicky's special someone? 🌹</p>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes! 💖</button>
+      <button id="noBtn">No 😢</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="yesPage">
+    <h1 class="reveal">SALAMAT>! 🎉💝</h1>
+    <p class="reveal">Thank you for saying yes. <3</p>
+    <p class="reveal">Come back fast. 💗</p>
+    <p class="reveal">Can't wait for Feb 14th with you!</p>
+  </div>
+
+  <script>
+    const video = document.getElementById('bgVideo');
+
+    // Unmute on first interaction
+    let hasInteracted = false;
+    function handleInteraction() {
+      if (!hasInteracted) {
+        video.muted = false;
+        video.volume = 0.4;
+        hasInteracted = true;
+      }
+    }
+
+    document.addEventListener('click', handleInteraction, { once: true });
+    document.getElementById('noBtn').addEventListener('mouseover', handleInteraction);
+
+    // Yes grows on No clicks
+    let noClickCount = 0;
+
+    const noPhrases = [
+      "Are you sure
